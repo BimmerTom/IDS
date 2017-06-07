@@ -1,0 +1,16 @@
+- hosts:  all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: update apt packages
+      apt: update_cache=yes
+
+    - name: upgrade apt packages
+      apt: upgrade=yes
+
+    - name: Reboot Server
+      command: /sbin/reboot
+
+    - name: Wait for server to come back alive
+      become: no
+      local_action: wait_for host="{{ inventory_hostname }}" search_regex=OpenSSH port=22 timeout=300
