@@ -1,0 +1,27 @@
+- hosts: openvas 
+  become: true
+  tasks:
+   - name: Add Software common
+     apt: name='software-properties-common' state=present update_cache=yes
+   - name: Add Openvas Repository
+     apt_repository: repo='ppa:mrazavi/openvas' state=present
+   - name: Now Install openvas
+     apt: name={{ item }} state=present update_cache=yes
+     with_items:
+       - openvas
+       - sqlite3
+       - haveged
+   - name: Update NVT Feed
+     command: openvas-nvt-sync
+   - name: Update SCAP Data
+     command: openvas-scapdata-sync
+   - name: Update CERT Data
+     command: openvas-certdata-sync
+   - name: Update SCAP Data
+     command: openvas-scapdata-sync
+   - name: Restart openvas-scanner
+     systemd: state=restarted name=openvas-scanner
+   - name: Restart openvas-manager
+     systemd: state=restarted name=openvas-manager
+   - name: Rebuild NVT Data
+     command: openvasmd --rebuild --progress

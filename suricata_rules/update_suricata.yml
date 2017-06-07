@@ -1,0 +1,7 @@
+- hosts: sec-ansible1 
+  become: yes
+  tasks:
+    - name: Update suricata rules on the master
+      command: oinkmaster -o /home/ansible/suricata_rules/rules -C /home/ansible/suricata_rules/oinkmaster.conf 
+
+

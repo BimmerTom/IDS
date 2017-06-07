@@ -1,0 +1,12 @@
+- hosts: sensors 
+  become: yes
+  tasks:
+    - name: Copy the suricata rules to the hosts
+      synchronize:
+        src: /home/ansible/suricata_rules/rules/ 
+        dest: /etc/suricata/rules/
+      delegate_to: sec-ansible1
+    - name: restart suricata after the copy
+      systemd:
+        name: suricata.service
+        state: restarted

@@ -1,0 +1,38 @@
+
+filebeat:
+  prospectors:
+    -
+      paths:
+        - "/var/log/suricata/eve.json"
+
+      input_type: log
+
+      document_type: SuricataIDPS
+    -
+      paths:
+        - "/opt/bro/logs/current/*.log"
+      input_type: log
+      document_type: Bro
+
+  registry_file: /var/lib/filebeat/registry
+
+output:
+
+  logstash:
+    hosts: ["sec-ls1:5044"]
+
+    tls:
+      certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]
+shipper:
+
+logging:
+
+
+  files:
+
+    rotateeverybytes: 10485760 # = 10MB
+
+
+
+
+

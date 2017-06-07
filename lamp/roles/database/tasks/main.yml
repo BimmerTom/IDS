@@ -1,0 +1,13 @@
+- name: 1a. Add APT GPG Signing Key
+  apt_key: >
+    keyserver="hkp://keyserver.ubuntu.com:80"
+    id="0xF1656F24C74CD1D8"
+
+- name: 1b. Add APT Repository for MariahDB
+  apt_repository: repo='deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu xenial main' state=present update_cache=yes
+
+- name: 1c. Install MariabDB Service
+  apt: name=mariadb-server state=present
+
+- name: Make sure the service is running
+  service: name=mysql state=started enabled=true

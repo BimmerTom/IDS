@@ -1,0 +1,3 @@
+- name: restart suricata
+  become: yes
+  service: suricata state=restarted
